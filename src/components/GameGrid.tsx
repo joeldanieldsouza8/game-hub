@@ -3,9 +3,16 @@ import useGames from "../hooks/useGames";
 import GameCard from "./GameCard";
 import GameCardSkeleton from "./GameCardSkeleton";
 import GameCardContainer from "./GameCardContainer";
+import { Genre } from "../hooks/useGenres";
 
-function GameGrid() {
-  const { data, isLoading, error } = useGames();
+interface GameGridProps {
+  selectedGenre: Genre | null;
+}
+
+function GameGrid({ selectedGenre }: GameGridProps) {
+  const { data, isLoading, error } = useGames(selectedGenre); // Pass the selected genre object to the hook
+
+  console.log(data); // debug
 
   // Define the number of skeletons you want to display
   const skeletonCount = [1, 2, 3, 4, 5, 6];

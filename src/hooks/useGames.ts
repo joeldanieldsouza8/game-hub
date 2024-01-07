@@ -2,6 +2,7 @@
 // import apiClient from "../services/api-client";
 
 import useData from "./useData";
+import { Genre } from "./useGenres";
 
 export interface Platform {
   id: number;
@@ -66,10 +67,19 @@ function useGames() {
 }
 */
 
-function useGames() {
-  const data = useData<Game>("games");
+// function useGames(selectedGenre: Genre | null) {
+//   const data = useData<Game>("games", {
+//     params: { genres: selectedGenre?.id }, // Only add the genres param if a genre is selected
+//   }, [selectedGenre]); // Re-run the effect if the selectedGenre changes
 
-  return data;
+//   return data;
+// }
+
+function useGames(selectedGenre: Genre | null) {
+  const endpoint = selectedGenre ? `games?genres=${selectedGenre.id}` : "games";
+  const { data, error, isLoading } = useData<Game>(endpoint);
+
+  return { data, error, isLoading };
 }
 
 export default useGames;

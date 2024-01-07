@@ -1,12 +1,16 @@
 import { useState, useEffect } from "react";
 import apiClient from "../services/api-client";
+import { AxiosRequestConfig } from "axios";
 
 interface FetchResponse<T> {
   count: number; // This is the total number of genres
   results: T[]; // This stores the genres
 }
 
-function useData<T>(endpoint: string) {
+function useData<T>(
+  endpoint: string,
+  requestConfig?: AxiosRequestConfig,
+) {
   const [data, setData] = useState<T[]>([]);
   const [error, setError] = useState<Error | null>(null);
   const [isLoading, setIsLoading] = useState(false);
@@ -20,6 +24,7 @@ function useData<T>(endpoint: string) {
       try {
         const response = await apiClient.get<FetchResponse<T>>(endpoint, {
           signal: controller.signal,
+          ...requestConfig, // Spread in any request config that was passed in (like query params)
         });
         console.log("Data fetched successfully for:", endpoint); // Log successful fetch
         setData(response.data.results);
@@ -33,7 +38,7 @@ function useData<T>(endpoint: string) {
           console.log("Fetch was aborted for:", endpoint); // Log specifically for abort
         }
         setIsLoading(false);
-      } 
+      }
     }
 
     fetchData();
@@ -43,7 +48,7 @@ function useData<T>(endpoint: string) {
       console.log("Cleanup called for:", endpoint); // Log when cleanup is called
       controller.abort();
     };
-  }, [endpoint]);
+  }, [endpoint, requestConfig]);
 
   return { data, error, isLoading };
 }
