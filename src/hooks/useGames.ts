@@ -1,6 +1,7 @@
 // import { useState, useEffect } from "react";
 // import apiClient from "../services/api-client";
 
+import { GameQuery } from "../App";
 import useData from "./useData";
 import { Genre } from "./useGenres";
 
@@ -67,16 +68,38 @@ function useGames() {
 }
 */
 
-// function useGames(selectedGenre: Genre | null) {
-//   const data = useData<Game>("games", {
-//     params: { genres: selectedGenre?.id }, // Only add the genres param if a genre is selected
-//   }, [selectedGenre]); // Re-run the effect if the selectedGenre changes
+/*
+function useGames(
+  selectedGenre: Genre | null,
+  selectedPlatform: Platform | null
+) {
+  let query = "";
+  if (selectedGenre && selectedPlatform) {
+    query = `?genres=${selectedGenre.id}&platforms=${selectedPlatform.id}`;
+  } else if (selectedGenre) {
+    query = `?genres=${selectedGenre.id}`;
+  } else if (selectedPlatform) {
+    query = `?platforms=${selectedPlatform.id}`;
+  }
 
-//   return data;
-// }
+  const endpoint = `games${query}`;
+  const { data, error, isLoading } = useData<Game>(endpoint);
 
-function useGames(selectedGenre: Genre | null) {
-  const endpoint = selectedGenre ? `games?genres=${selectedGenre.id}` : "games";
+  return { data, error, isLoading };
+}
+*/
+
+function useGames(gameQuery: GameQuery) {
+  let query = "";
+  if (gameQuery.genre && gameQuery.platform) {
+    query = `?genres=${gameQuery.genre.id}&platforms=${gameQuery.platform.id}`;
+  } else if (gameQuery.genre) {
+    query = `?genres=${gameQuery.genre.id}`;
+  } else if (gameQuery.platform) {
+    query = `?platforms=${gameQuery.platform.id}`;
+  }
+
+  const endpoint = `games${query}`;
   const { data, error, isLoading } = useData<Game>(endpoint);
 
   return { data, error, isLoading };

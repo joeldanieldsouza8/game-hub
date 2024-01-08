@@ -11,9 +11,10 @@ import getCroppedUrl from "../services/image-url";
 
 interface GenreListProps {
   onSelectGenre: (genre: Genre) => void;
+  selectedGenre: Genre | null;
 }
 
-function GenreList({ onSelectGenre }: GenreListProps) {
+function GenreList({ onSelectGenre, selectedGenre }: GenreListProps) {
   const { data, isLoading, error } = useGenres();
 
   if (error) return null;
@@ -23,6 +24,12 @@ function GenreList({ onSelectGenre }: GenreListProps) {
   function handleGenreClick(genre: Genre) {
     onSelectGenre(genre); // Call the callback prop
     console.log(genre); // debug
+  }
+
+  function handleSelectedGenre(genre: Genre) {
+    if (!selectedGenre) return false;
+
+    return selectedGenre.id === genre.id;
   }
 
   return (
@@ -38,6 +45,7 @@ function GenreList({ onSelectGenre }: GenreListProps) {
               mr={2} // Add some right margin to the image
             />
             <Button
+              fontWeight={handleSelectedGenre(genre) ? "bold" : "normal"}
               fontSize="md"
               variant="link"
               onClick={() => handleGenreClick(genre)}
