@@ -1,9 +1,10 @@
 // import { useState, useEffect } from "react";
 // import apiClient from "../services/api-client";
 
+import { useMemo } from "react";
 import { GameQuery } from "../App";
 import useData from "./useData";
-import { Genre } from "./useGenres";
+// import { Genre } from "./useGenres";
 
 export interface Platform {
   id: number;
@@ -68,39 +69,36 @@ function useGames() {
 }
 */
 
-/*
-function useGames(
-  selectedGenre: Genre | null,
-  selectedPlatform: Platform | null
-) {
-  let query = "";
-  if (selectedGenre && selectedPlatform) {
-    query = `?genres=${selectedGenre.id}&platforms=${selectedPlatform.id}`;
-  } else if (selectedGenre) {
-    query = `?genres=${selectedGenre.id}`;
-  } else if (selectedPlatform) {
-    query = `?platforms=${selectedPlatform.id}`;
-  }
+// function useGames(gameQuery: GameQuery) {
+//   let query = "";
+//   if (gameQuery.genre && gameQuery.platform) {
+//     query = `?genres=${gameQuery.genre.id}&platforms=${gameQuery.platform.id}`;
+//   } else if (gameQuery.genre) {
+//     query = `?genres=${gameQuery.genre.id}`;
+//   } else if (gameQuery.platform) {
+//     query = `?platforms=${gameQuery.platform.id}`;
+//   } else if (gameQuery.sortOrder) {
+//     query = `?ordering=${gameQuery.sortOrder}`;
+//   }
 
-  const endpoint = `games${query}`;
-  const { data, error, isLoading } = useData<Game>(endpoint);
+//   const endpoint = `games${query}`;
+//   const { data, error, isLoading } = useData<Game>(endpoint);
 
-  return { data, error, isLoading };
-}
-*/
+//   return { data, error, isLoading };
+// }
 
 function useGames(gameQuery: GameQuery) {
-  let query = "";
-  if (gameQuery.genre && gameQuery.platform) {
-    query = `?genres=${gameQuery.genre.id}&platforms=${gameQuery.platform.id}`;
-  } else if (gameQuery.genre) {
-    query = `?genres=${gameQuery.genre.id}`;
-  } else if (gameQuery.platform) {
-    query = `?platforms=${gameQuery.platform.id}`;
-  }
+  const requestConfig = useMemo(() => {
+    return {
+      params: {
+        genres: gameQuery.genre?.id,
+        platforms: gameQuery.platform?.id,
+        ordering: gameQuery.sortOrder,
+      },
+    };
+  }, [gameQuery]);
 
-  const endpoint = `games${query}`;
-  const { data, error, isLoading } = useData<Game>(endpoint);
+  const { data, error, isLoading } = useData<Game>("games", requestConfig);
 
   return { data, error, isLoading };
 }

@@ -16,7 +16,7 @@ interface GameGridProps {
 
 function GameGrid({ gameQuery }: GameGridProps) {
   // const { data, isLoading, error } = useGames(selectedGenre, selectedPlatform); // Pass the selected genre and platform to the hook
-
+ 
   // Replace the above with this:
   const { data, isLoading, error } = useGames(gameQuery); // Pass the selected genre and platform to the hook
 
