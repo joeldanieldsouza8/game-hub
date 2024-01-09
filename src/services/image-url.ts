@@ -1,6 +1,7 @@
+import noImage from "../assets/default_placeholder_image.webp"; // We need to import this as a module so that we can use it as a string because it's not a .ts file
+
 function getCroppedUrl(url: string) {
-  // To be fixed later on
-  if(!url) return ""; // If there's no url, return an empty string
+  if (!url) return noImage;
 
   const target = "media/"; // The string we want to find
   const index = url.indexOf(target) + target.length; // Find the index of the target string, then add the length of the target string to get the index of the first character after the target string (i.e. the start of the image filename)

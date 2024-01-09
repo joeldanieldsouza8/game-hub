@@ -7,11 +7,13 @@ import { Genre } from "./hooks/useGenres";
 import PlatformSelector from "./components/PlatformSelector";
 import { Platform } from "./hooks/useGames";
 import SortSelector from "./components/SortSelector";
+import GameHeading from "./components/GameHeading";
 
 export interface GameQuery {
   genre: Genre | null; // Add the selected genre to the props
   platform: Platform | null; // Add the selected platform to the props
-  sortOrder: string;
+  sortOrder: string; // Add the selected sort order to the props
+  searchQuery?: string; // Add the search query to the props
 }
 
 function App() {
@@ -45,6 +47,10 @@ function App() {
     setGameQuery({ ...gameQuery, sortOrder }); // Update the state with the new platform
   }
 
+  function handleSearch(searchQuery: string) {
+    setGameQuery({ ...gameQuery, searchQuery }); // Update the state with the new search query
+  }
+
   return (
     <Grid
       templateAreas={{
@@ -54,9 +60,9 @@ function App() {
       templateColumns={{ base: "1fr", lg: "200px" }} // Define the width of the aside area
     >
       <GridItem area="nav">
-        <NavBar />
+        <NavBar onSearch={handleSearch} />
       </GridItem>
-      <GridItem area="aside" paddingX={3}>
+      <GridItem area="aside" paddingX={3} paddingY={8}>
         <Show above="lg">
           <GenreList
             onSelectGenre={handleGenreSelect}
@@ -65,12 +71,16 @@ function App() {
         </Show>
       </GridItem>
       <GridItem area="main">
+        <GameHeading gameQuery={gameQuery} />
         <HStack spacing={5} mb={5}>
           <PlatformSelector
             onSelectPlatform={handlePlatformSelect}
             selectedPlatform={gameQuery.platform}
           />
-          <SortSelector onSelectSort={handleSortSelect} selectedSort={gameQuery.sortOrder} />
+          <SortSelector
+            onSelectSort={handleSortSelect}
+            selectedSort={gameQuery.sortOrder}
+          />
         </HStack>
         <GameGrid
           // selectedGenre={gameQuery.genre}

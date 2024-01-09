@@ -1,6 +1,7 @@
 // import { useState, useEffect } from "react";
 // import apiClient from "../services/api-client";
-import useData from "./useData";
+// import useData from "./useData";
+import genres from "../data/genres";
 
 export interface Genre {
   id: number;
@@ -9,15 +10,13 @@ export interface Genre {
 }
 
 // We don't need to use this interface anymore because of the generic type hook called useData
+// We don't need to use this hook anymore because of the generic type hook called useData
 /*
 interface FetchGenresResponse {
   count: number; // This is the total number of genres
   results: Genre[]; // This stores the genres
 }
-*/
 
-// We don't need to use this hook anymore because of the generic type hook called useData
-/*
 function useGenres() {
   const [genres, setGenres] = useState<Genre[]>([]);
   const [error, setError] = useState<Error | null>(null);
@@ -60,9 +59,18 @@ function useGenres() {
 }
 */
 
+// This sends a fetch request tp the API each time the app loads even though the data doesn't change
+/*
 function useGenres() {
   const data = useData<Genre>("genres");
 
+  return data;
+}
+*/
+
+// This sends a fetch request to the API only when the app loads and the data changes
+function useGenres() {
+  const data = { data: genres, isLoading: false, error: null }; // The reason we return an object is because we want to minimize the impact of this change on the consumers of this hook.
   return data;
 }
 

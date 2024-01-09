@@ -10,7 +10,7 @@ export interface Platform {
   id: number;
   name: string;
   slug: string;
-  image: string;
+  image?: string;
 }
 
 export interface Game {
@@ -19,6 +19,8 @@ export interface Game {
   background_image: string;
   parent_platforms: { platform: Platform }[]; // We only care about the platform property
   metacritic: number;
+  rating_top: number;
+  rating: number;
 }
 
 /*
@@ -94,9 +96,10 @@ function useGames(gameQuery: GameQuery) {
         genres: gameQuery.genre?.id,
         platforms: gameQuery.platform?.id,
         ordering: gameQuery.sortOrder,
+        search: gameQuery.searchQuery,
       },
     };
-  }, [gameQuery]);
+  }, [gameQuery]); // Only re-run this effect if the gameQuery changes
 
   const { data, error, isLoading } = useData<Game>("games", requestConfig);
 

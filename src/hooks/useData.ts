@@ -17,22 +17,22 @@ function useData<T>(endpoint: string, requestConfig?: AxiosRequestConfig) {
 
     async function fetchData() {
       setIsLoading(true);
-      console.log("Starting data fetch for:", endpoint); // Log when fetch starts
+      // console.log("Starting data fetch for:", endpoint); // Log when fetch starts
       try {
         const response = await apiClient.get<FetchResponse<T>>(endpoint, {
           signal: controller.signal,
           ...requestConfig, // Spread in any request config that was passed in (like query params)
         });
-        console.log("Data fetched successfully for:", endpoint); // Log successful fetch
+        // console.log("Data fetched successfully for:", endpoint); // Log successful fetch
         setData(response.data.results);
         setError(null);
         setIsLoading(false);
       } catch (error) {
-        console.log("Fetch error for:", endpoint, error); // Log any errors
+        // console.log("Fetch error for:", endpoint, error); // Log any errors
         if (error instanceof Error && error.name !== "AbortError") {
           setError(error);
         } else {
-          console.log("Fetch was aborted for:", endpoint); // Log specifically for abort
+          // console.log("Fetch was aborted for:", endpoint); // Log specifically for abort
         }
         setIsLoading(false);
       }
@@ -42,7 +42,7 @@ function useData<T>(endpoint: string, requestConfig?: AxiosRequestConfig) {
 
     // Cleanup function
     return () => {
-      console.log("Cleanup called for:", endpoint); // Log when cleanup is called
+      // console.log("Cleanup called for:", endpoint); // Log when cleanup is called
       controller.abort();
     };
   }, [endpoint, requestConfig]);

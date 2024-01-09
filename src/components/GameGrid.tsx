@@ -16,11 +16,11 @@ interface GameGridProps {
 
 function GameGrid({ gameQuery }: GameGridProps) {
   // const { data, isLoading, error } = useGames(selectedGenre, selectedPlatform); // Pass the selected genre and platform to the hook
- 
+
   // Replace the above with this:
   const { data, isLoading, error } = useGames(gameQuery); // Pass the selected genre and platform to the hook
 
-  console.log(data); // debug
+  // console.log(data); // debug
 
   // Define the number of skeletons you want to display
   const skeletonCount = [1, 2, 3, 4, 5, 6];
@@ -28,8 +28,8 @@ function GameGrid({ gameQuery }: GameGridProps) {
   if (isLoading) {
     return (
       <SimpleGrid
-        columns={{ sm: 1, md: 2, lg: 3, xl: 5 }} // Responsive column setup
-        spacing={3} // Spacing between items
+        columns={{ sm: 1, md: 2, lg: 3, xl: 4 }} // Responsive column setup
+        spacing={5} // Spacing between items
         padding="" // Padding around the grid
         w="full" // Grid takes the full width
       >
@@ -49,7 +49,7 @@ function GameGrid({ gameQuery }: GameGridProps) {
   return (
     <SimpleGrid
       columns={{ sm: 1, md: 2, lg: 3, xl: 5 }} // Responsive column setup
-      spacing={3} // Spacing between items
+      spacing={5} // Spacing between items
       padding="" // Padding around the grid
       w="full" // Grid takes the full width
     >
